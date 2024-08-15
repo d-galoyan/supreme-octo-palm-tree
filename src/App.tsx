@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {ChangeEvent, useState} from 'react';
+import {AnimationOption} from "./types";
+import Animation from "./components/Animation";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [selectedOption, setSelectedOption] = useState<AnimationOption>(AnimationOption.Css);
+    const [degreesPerFrame, setDegreesPerFrame] = useState<number>(1);
+    const [duration, setDuration] = useState<number>(1);
+
+    const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedOption(event.target.value as unknown as AnimationOption);
+    };
+
+    return (
+        <div className="App">
+            <h3>
+                Choose Animation Option
+            </h3>
+            <div>
+                <label style={{display: "block", margin: "10px 0"}}>
+                    <input
+                        type="radio"
+                        value={AnimationOption.Css}
+                        checked={selectedOption === AnimationOption.Css}
+                        onChange={handleOptionChange}
+                    />
+                    CSS
+                </label>
+                <label style={{display: "block", margin: "10px 0"}}>
+                    <input
+                        type="radio"
+                        value={AnimationOption.JS}
+                        checked={selectedOption === AnimationOption.JS}
+                        onChange={handleOptionChange}
+                    />
+                    Javascript
+                </label>
+                <label style={{display: "block", margin: "10px 0"}}>
+                    <input
+                        type="radio"
+                        value={AnimationOption.Frame}
+                        checked={selectedOption === AnimationOption.Frame}
+                        onChange={handleOptionChange}
+                    />
+                    Request Animation Frame
+                </label>
+                {selectedOption === AnimationOption.Frame &&
+                    <label style={{display: "block", margin: "10px 0"}}>
+                        <input defaultValue={degreesPerFrame} onChange={e => setDegreesPerFrame(+e.target.value)}
+                               type="number"/>
+                        Degree per Frame
+                    </label>}
+                <label style={{display: "block", margin: "10px 0"}}>
+                    <input defaultValue={duration} onChange={e => setDuration(+e.target.value)} type="number"/>
+                    Animation Duration in seconds
+                </label>
+            </div>
+            <Animation duration={duration} degreePerFrame={degreesPerFrame} selectedOption={selectedOption}/>
+        </div>
+    );
 }
 
 export default App;
