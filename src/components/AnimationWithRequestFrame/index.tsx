@@ -36,7 +36,7 @@ const AnimationWithRequestFrame = ({degreePerFrame, duration}: IAnimationWithReq
     };
 
     useEffect(() => {
-        return () => cancelAnimationFrame(requestRef.current); // Clean up on unmount
+        return () => cancelAnimationFrame(requestRef.current);
     }, []);
 
     return (
